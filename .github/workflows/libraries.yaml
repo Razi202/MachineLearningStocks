@@ -1,0 +1,24 @@
+name: Check library requirements
+
+on: [push, pull_request]
+
+jobs:
+  check-requirements:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9' # replace with the version of Python you're using
+
+    - name: Install dependencies
+      run: pip install -r ../requirements.txt
+
+    - name: Check dependencies
+      run: |
+        pip freeze > installed_requirements.txt
+        diff -u ../requirements.txt installed_requirements.txt || exit 1
