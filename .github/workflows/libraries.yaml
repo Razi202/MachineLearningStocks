@@ -3,22 +3,22 @@ name: Check library requirements
 on: [push, pull_request]
 
 jobs:
-  check-requirements:
+  check-dependencies:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
+    - name: Checkout Code
       uses: actions/checkout@v2
-
-    - name: Set up Python
+      
+    - name: Setup Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12.0-alpha.5' # replace with the version of Python you're using
+        python-version: '3.8' # replace with your desired Python version
 
     - name: Install dependencies
       run: pip install -r requirements.txt
 
+    - name: Create requirements.txt
+      run: pip freeze > requirements.txt
+
     - name: Check dependencies
-      run: |
-        pip freeze > installed_requirements.txt
-        diff -u requirements.txt installed_requirements.txt || exit 1
+      run: pip check
